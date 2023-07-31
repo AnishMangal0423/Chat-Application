@@ -5,9 +5,11 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const connect = require('./config/db-config');
-
+const mongoose = require('mongoose');
 const Group = require('./models/group');
 const Chat = require('./models/chat');
+
+
 
 app.set('view engine', 'ejs');
 app.use(express.json())
@@ -49,6 +51,19 @@ app.get('/chat/:roomid/:user', async (req, res) => {
     });
 });
 
+// Check if the connection is successful
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB database');
+});
+
+app.get('/', async(req, res)=>{
+    const Groups = await Group.find();
+      
+    res.render('home', { Groups });
+})
+
 app.get('/group', async (req, res) => {
     res.render('group');
 });
@@ -63,7 +78,7 @@ app.post('/group', async (req, res) => {
 });
   
 server.listen(3001, async () => {
-  console.log('listening on *:3000');
+  console.log('listening on *:3001');
   await connect();
   console.log("DB connected");
 });

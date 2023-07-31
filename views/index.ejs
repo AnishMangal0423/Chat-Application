@@ -20,7 +20,7 @@
     <button id="send">Send</button>
     <ul id="msg_list">
          <% for (let i = 0; i < previousmsgs.length; i++) {%>
-            <li style="background-color: grey; margin-top: 5px; width: 250px; padding-left: 4px; opacity: 0.9;"> <%= previousmsgs[i].sender %> - <%= previousmsgs[i].content %> </li>
+            <li> <%= previousmsgs[i].sender %> - <%= previousmsgs[i].content %> </li>
          <% } %>
     </ul>
 
